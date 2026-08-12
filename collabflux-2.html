@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CollabFlux — We Don't Book Influencers. We Build Partnerships.</title>
+<meta name="description" content="CollabFlux is a creator partnerships company. Discovery, strategy, negotiation, execution, and reporting — built to compound, not disappear by Friday." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0B0B;
+    --surface:#141414;
+    --surface-2:#191919;
+    --surface-3:#1c1c1c;
+    --text:#FFFFFF;
+    --text-dim:#BDBDBD;
+    --text-faint:#7A7A7A;
+    --accent:#C8FF4D;
+    --accent-hover:#B4F33D;
+    --border:#2A2A2A;
+    --border-soft:#1F1F1F;
+
+    --font-display:'Inter Tight', 'Inter', -apple-system, sans-serif;
+    --font-body:'Inter', -apple-system, sans-serif;
+
+    --ease:cubic-bezier(.16,.8,.24,1);
+    --container:1180px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    line-height:1.5;
+    cursor:auto;
+  }
+
+  ::selection{ background:var(--accent); color:#0B0B0B; }
+
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+  img{ max-width:100%; display:block; }
+
+  .wrap{ max-width:var(--container); margin:0 auto; padding:0 32px; }
+
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:4px; }
+
+  /* ---------- cursor glow (desktop only) ---------- */
+  .cursor-glow{
+    position:fixed; top:0; left:0; width:520px; height:520px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(200,255,77,0.07) 0%, rgba(200,255,77,0) 68%);
+    pointer-events:none; z-index:2;
+    transform:translate(-50%,-50%);
+    will-change:transform;
+    opacity:0;
+    transition:opacity .4s ease;
+  }
+  .cursor-glow.active{ opacity:1; }
+
+  /* ---------- scroll progress ---------- */
+  .scroll-progress{
+    position:fixed; top:0; left:0; height:2px; width:0%;
+    background:var(--accent); z-index:1000; transition:width 60ms linear;
+  }
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:fixed; top:0; left:0; right:0; z-index:900;
+    padding:22px 0;
+    transition:background .4s var(--ease), border-color .4s var(--ease), padding .4s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  header.nav.scrolled{
+    background:rgba(11,11,11,0.72);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    border-bottom:1px solid var(--border-soft);
+    padding:16px 0;
+  }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; }
+  .logo{ display:flex; align-items:center; gap:9px; font-family:var(--font-display); font-weight:800; font-size:19px; letter-spacing:-0.02em; }
+  .logo-mark{ width:20px; height:20px; position:relative; flex-shrink:0; }
+  .logo-mark svg{ width:100%; height:100%; display:block; }
+  .nav-links{ display:flex; align-items:center; gap:32px; list-style:none; }
+  .nav-links a{ font-size:14px; color:var(--text-dim); font-weight:500; position:relative; transition:color .25s var(--ease); }
+  .nav-links a::after{ content:''; position:absolute; left:0; bottom:-6px; width:0; height:1px; background:var(--accent); transition:width .3s var(--ease); }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-cta{ display:flex; align-items:center; gap:18px; }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:11px 22px; border-radius:100px; font-size:14px; font-weight:600; white-space:nowrap;
+    transition:transform .2s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
+    position:relative;
+  }
+  .btn-primary{ background:var(--accent); color:#0B0B0B; }
+  .btn-primary:hover{ background:var(--accent-hover); box-shadow:0 10px 30px -8px rgba(200,255,77,0.45); }
+  .btn-ghost{ background:transparent; color:var(--text); border:1px solid var(--border); }
+  .btn-ghost:hover{ border-color:var(--text-dim); transform:translateY(-2px); }
+  .btn-sm{ padding:9px 18px; font-size:13px; }
+  .magnetic{ will-change:transform; }
+
+  section{ position:relative; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:20px;
+  }
+  .eyebrow::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 12px 2px rgba(200,255,77,0.6); }
+  .section-head{ max-width:660px; margin-bottom:72px; }
+  .section-head h2{ font-family:var(--font-display); font-weight:700; font-size:clamp(32px, 4vw, 48px); letter-spacing:-0.02em; line-height:1.08; margin-bottom:20px; }
+  .section-head p{ color:var(--text-dim); font-size:17px; line-height:1.65; max-width:540px; }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* word-by-word text reveal */
+  .word-reveal{ overflow:hidden; display:inline-block; }
+  .word-reveal span{
+    display:inline-block; transform:translateY(110%); opacity:0;
+    transition:transform .7s var(--ease), opacity .7s var(--ease);
+  }
+  .word-reveal.in-view span{ transform:translateY(0); opacity:1; }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:190px 0 130px; position:relative; overflow:hidden; }
+  .hero::before{
+    content:''; position:absolute; top:-20%; left:50%; transform:translateX(-50%);
+    width:960px; height:960px;
+    background:radial-gradient(circle, rgba(200,255,77,0.10) 0%, rgba(200,255,77,0) 62%);
+    pointer-events:none;
+  }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:40px; align-items:center; position:relative; z-index:3; }
+  .hero-copy h1{
+    font-family:var(--font-display); font-weight:800;
+    font-size:clamp(38px, 4.8vw, 64px); line-height:1.06; letter-spacing:-0.03em; margin-bottom:28px;
+  }
+  .hero-copy h1 .line{ display:block; }
+  .hero-copy h1 .dim{ color:var(--text-dim); }
+  .hero-copy h1 .accent-text{ color:var(--accent); }
+  .hero-copy p.sub{ font-size:18px; color:var(--text-dim); max-width:480px; margin-bottom:36px; line-height:1.6; }
+  .hero-ctas{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:56px; }
+  .hero-meta{ display:flex; gap:32px; flex-wrap:wrap; }
+  .hero-meta div{ display:flex; flex-direction:column; gap:2px; }
+  .hero-meta .num{ font-family:var(--font-display); font-weight:800; font-size:26px; letter-spacing:-0.02em; }
+  .hero-meta .lbl{ font-size:12.5px; color:var(--text-faint); }
+
+  .network-visual{ position:relative; height:520px; }
+  .network-visual svg{ width:100%; height:100%; overflow:visible; }
+  .net-node{
+    position:absolute; display:flex; align-items:center; gap:8px;
+    padding:9px 14px 9px 9px; background:var(--surface); border:1px solid var(--border);
+    border-radius:100px; font-size:12.5px; font-weight:600;
+    box-shadow:0 12px 30px -12px rgba(0,0,0,0.6);
+    animation:floaty 6s ease-in-out infinite; white-space:nowrap;
+  }
+  .net-node .dot{ width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#0B0B0B; flex-shrink:0; }
+  .net-node.brand{ background:var(--accent); color:#0B0B0B; border-color:var(--accent); font-weight:800; padding:14px 20px; }
+  .net-node.brand .dot{ background:#0B0B0B; color:var(--accent); }
+  @keyframes floaty{ 0%,100%{ transform:translateY(0px); } 50%{ transform:translateY(-10px); } }
+  .net-line{ stroke:var(--border); stroke-width:1; fill:none; }
+  .net-line.pulse{ stroke:var(--accent); stroke-opacity:0.5; stroke-dasharray:4 8; animation:dash 20s linear infinite; }
+  @keyframes dash{ to{ stroke-dashoffset:-400; } }
+
+  /* ---------- TRUSTED / AUDIENCE ---------- */
+  .trusted{ padding:40px 0 100px; }
+  .trusted-label{ text-align:center; font-size:12.5px; color:var(--text-faint); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:36px; }
+  .trusted-row{ display:flex; align-items:center; justify-content:center; gap:56px; flex-wrap:wrap; opacity:0.55; }
+  .placeholder-mark{ display:flex; align-items:center; gap:8px; color:var(--text-faint); font-family:var(--font-display); font-weight:700; font-size:15px; letter-spacing:-0.01em; transition:opacity .3s, color .3s; }
+  .placeholder-mark:hover{ opacity:1; color:var(--text-dim); }
+  .placeholder-mark svg{ width:22px; height:22px; opacity:0.8; }
+
+  /* ---------- STORY / WHY ---------- */
+  .story{ padding:130px 0; border-top:1px solid var(--border-soft); }
+  .story-statement{ max-width:820px; margin-bottom:64px; }
+  .story-statement h2{
+    font-family:var(--font-display); font-weight:700;
+    font-size:clamp(30px,4vw,44px); letter-spacing:-0.02em; line-height:1.18;
+  }
+  .story-statement h2 .dim{ color:var(--text-faint); }
+  .story-grid{ display:grid; grid-template-columns:0.95fr 1.05fr; gap:60px; align-items:start; }
+  .problem-list{ list-style:none; display:flex; flex-direction:column; gap:0; }
+  .problem-list li{ display:flex; align-items:flex-start; gap:16px; padding:22px 0; border-bottom:1px solid var(--border-soft); font-size:16.5px; color:var(--text-dim); line-height:1.55; }
+  .problem-list li:first-child{ padding-top:0; }
+  .problem-list li .x{ color:var(--text-faint); font-size:13px; font-weight:700; margin-top:4px; flex-shrink:0; }
+  .story-resolve{ display:flex; flex-direction:column; justify-content:center; height:100%; padding-left:28px; border-left:1px solid var(--border); }
+  .story-resolve .fix-eyebrow{ font-size:12px; color:var(--text-faint); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:14px; }
+  .story-resolve h3{ font-family:var(--font-display); font-weight:800; font-size:clamp(28px,3.2vw,38px); letter-spacing:-0.02em; color:var(--accent); margin-bottom:18px; }
+  .story-resolve p{ color:var(--text-dim); font-size:16px; line-height:1.65; max-width:420px; margin-bottom:14px; }
+  .story-resolve p:last-child{ margin-bottom:0; }
+
+  /* ---------- SERVICES ---------- */
+  .services{ padding:130px 0; border-top:1px solid var(--border-soft); }
+  .services-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); border-radius:20px; overflow:hidden; }
+  .service-card{ background:var(--surface); padding:38px 34px; transition:background .35s var(--ease), transform .1s linear; position:relative; transform-style:preserve-3d; will-change:transform; }
+  .service-card:hover{ background:var(--surface-2); }
+  .service-index{ font-family:var(--font-display); font-weight:700; font-size:12px; color:var(--text-faint); margin-bottom:20px; display:block; }
+  .service-icon{ width:40px; height:40px; display:flex; align-items:center; justify-content:center; background:var(--bg); border:1px solid var(--border); border-radius:11px; margin-bottom:22px; transition:border-color .3s, transform .3s var(--ease); }
+  .service-icon svg{ width:19px; height:19px; stroke:var(--accent); }
+  .service-card:hover .service-icon{ border-color:var(--accent); transform:translateY(-3px); }
+  .service-card h3{ font-family:var(--font-display); font-weight:700; font-size:19px; margin-bottom:10px; letter-spacing:-0.01em; }
+  .service-card p{ color:var(--text-dim); font-size:14.5px; line-height:1.6; }
+
+  .future-row{ margin-top:28px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding:22px 26px; border:1px dashed var(--border); border-radius:16px; }
+  .future-row .flabel{ font-size:12.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.08em; margin-right:8px; }
+  .future-pill{ font-size:13px; color:var(--text-dim); background:var(--surface); border:1px solid var(--border); padding:7px 14px; border-radius:100px; }
+
+  /* ---------- CAMPAIGN JOURNEY (vertical timeline) ---------- */
+  .journey{ padding:130px 0; border-top:1px solid var(--border-soft); }
+  .journey-list{ position:relative; max-width:760px; }
+  .journey-list::before{ content:''; position:absolute; left:19px; top:8px; bottom:8px; width:1px; background:var(--border); }
+  .journey-fill{ position:absolute; left:19px; top:8px; width:1px; background:var(--accent); height:0%; transition:height .2s linear; box-shadow:0 0 8px rgba(200,255,77,0.5); }
+  .journey-item{ position:relative; padding:0 0 52px 64px; }
+  .journey-item:last-child{ padding-bottom:0; }
+  .journey-dot{
+    position:absolute; left:0; top:-2px; width:40px; height:40px; border-radius:50%;
+    background:var(--surface); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:13px; color:var(--text-faint);
+    transition:border-color .4s, color .4s, background .4s;
+    z-index:2;
+  }
+  .journey-item.in-view .journey-dot{ border-color:var(--accent); color:#0B0B0B; background:var(--accent); }
+  .journey-item h4{ font-family:var(--font-display); font-weight:700; font-size:20px; margin-bottom:8px; }
+  .journey-item p{ color:var(--text-dim); font-size:15px; line-height:1.6; max-width:480px; }
+  .journey-arrow{ position:absolute; left:12px; top:44px; font-size:12px; color:var(--text-faint); }
+
+  /* ---------- CAMPAIGNS / WORK ---------- */
+  .campaigns{ padding:130px 0; border-top:1px solid var(--border-soft); }
+  .campaign-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .campaign-card{ border:1px solid var(--border); border-radius:18px; overflow:hidden; background:var(--surface); transition:transform .4s var(--ease), border-color .4s var(--ease); }
+  .campaign-card:hover{ transform:translateY(-6px); border-color:var(--text-faint); }
+  .campaign-thumb{
+    height:170px;
+    background:radial-gradient(circle at 30% 20%, rgba(200,255,77,0.14), transparent 60%),
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 14px);
+    border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:center; position:relative;
+  }
+  .campaign-thumb span{ font-family:var(--font-display); font-weight:700; font-size:12.5px; color:var(--text-faint); letter-spacing:0.06em; text-transform:uppercase; border:1px dashed var(--border); padding:6px 12px; border-radius:100px; }
+  .campaign-body{ padding:24px 24px 26px; }
+  .campaign-tag{ font-size:12px; color:var(--accent); font-weight:600; margin-bottom:10px; }
+  .campaign-body h3{ font-family:var(--font-display); font-weight:700; font-size:17px; margin-bottom:14px; }
+  .campaign-stats{ display:flex; gap:18px; padding-top:14px; border-top:1px solid var(--border-soft); }
+  .campaign-stats div{ display:flex; flex-direction:column; gap:2px; }
+  .campaign-stats .v{ font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--text-faint); }
+  .campaign-stats .k{ font-size:11px; color:var(--text-faint); }
+
+  /* ---------- CREATOR ECOSYSTEM ---------- */
+  .ecosystem{ padding:130px 0; border-top:1px solid var(--border-soft); overflow:hidden; }
+  .eco-field{ position:relative; height:460px; border:1px solid var(--border-soft); border-radius:24px; background:radial-gradient(circle at 50% 50%, rgba(200,255,77,0.05), transparent 65%); }
+  .eco-field svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .eco-line{ stroke:var(--border); stroke-width:1; fill:none; transition:stroke .3s, stroke-opacity .3s, stroke-width .3s; }
+  .eco-line.active{ stroke:var(--accent); stroke-opacity:0.7; stroke-width:1.4; }
+  .eco-center{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    padding:16px 24px; background:var(--accent); color:#0B0B0B; border-radius:100px;
+    font-family:var(--font-display); font-weight:800; font-size:15px; z-index:2;
+    box-shadow:0 0 40px rgba(200,255,77,0.25);
+  }
+  .eco-chip{
+    position:absolute; padding:10px 18px; background:var(--surface); border:1px solid var(--border); border-radius:100px;
+    font-size:13.5px; font-weight:600; color:var(--text-dim);
+    animation:floaty 7s ease-in-out infinite; transition:border-color .3s, color .3s, transform .3s, background .3s;
+    z-index:2; cursor:pointer;
+  }
+  .eco-chip:hover, .eco-chip.active-chip{ border-color:var(--accent); color:var(--text); background:var(--surface-2); transform:scale(1.06); }
+
+  /* ---------- WHY ---------- */
+  .why{ padding:130px 0; border-top:1px solid var(--border-soft); }
+  .why-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); border-radius:20px; overflow:hidden; }
+  .why-card{ background:var(--surface); padding:28px 20px; text-align:left; }
+  .why-card .n{ font-family:var(--font-display); font-weight:800; font-size:13px; color:var(--accent); margin-bottom:18px; display:block; }
+  .why-card h4{ font-family:var(--font-display); font-weight:700; font-size:15.5px; margin-bottom:8px; line-height:1.3; }
+  .why-card p{ font-size:13px; color:var(--text-faint); line-height:1.5; }
+
+  /* ---------- NETWORK SNAPSHOT (dashboard) ---------- */
+  .snapshot{ padding:130px 0; border-top:1px solid var(--border-soft); }
+  .snap-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .snap-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:28px 26px;
+    display:flex; flex-direction:column; gap:14px; transition:border-color .3s, transform .3s var(--ease);
+  }
+  .snap-card:hover{ border-color:var(--text-faint); transform:translateY(-4px); }
+  .snap-icon{ width:34px; height:34px; border-radius:9px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; }
+  .snap-icon svg{ width:16px; height:16px; stroke:var(--accent); }
+  .snap-value{ font-family:var(--font-display); font-weight:800; font-size:34px; letter-spacing:-0.02em; }
+  .snap-label{ font-size:13px; color:var(--text-faint); }
+  .snap-note{ margin-top:8px; font-size:12.5px; color:var(--text-faint); max-width:640px; }
+
+  /* ---------- INSIGHTS ---------- */
+  .insights{ padding:130px 0; border-top:1px solid var(--border-soft); }
+  .insights-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .insight-card{
+    border:1px solid var(--border); border-radius:18px; padding:30px 28px; background:var(--surface);
+    display:flex; flex-direction:column; justify-content:space-between; min-height:260px;
+    transition:transform .4s var(--ease), border-color .4s var(--ease); transform-style:preserve-3d; will-change:transform;
+  }
+  .insight-card:hover{ border-color:var(--text-faint); }
+  .insight-tag{ font-size:11.5px; color:var(--accent); font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:16px; }
+  .insight-card h3{ font-family:var(--font-display); font-weight:700; font-size:19px; line-height:1.3; margin-bottom:14px; }
+  .insight-card p{ color:var(--text-dim); font-size:14.5px; line-height:1.6; }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testimonials{ padding:130px 0; border-top:1px solid var(--border-soft); }
+  .testi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .testi-card{ border:1px dashed var(--border); border-radius:18px; padding:32px 28px; display:flex; flex-direction:column; justify-content:space-between; min-height:220px; }
+  .testi-quote{ color:var(--text-faint); font-size:15px; line-height:1.6; font-style:italic; }
+  .testi-foot{ display:flex; align-items:center; gap:12px; margin-top:24px; }
+  .testi-avatar{ width:36px; height:36px; border-radius:50%; border:1px dashed var(--border); display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--text-faint); }
+  .testi-name{ font-size:13.5px; font-weight:600; color:var(--text-dim); }
+  .testi-role{ font-size:12px; color:var(--text-faint); }
+
+  /* ---------- FAQ ---------- */
+  .faq{ padding:130px 0; border-top:1px solid var(--border-soft); }
+  .faq-list{ max-width:760px; }
+  .faq-item{ border-bottom:1px solid var(--border-soft); }
+  .faq-q{ width:100%; display:flex; align-items:center; justify-content:space-between; padding:26px 0; text-align:left; font-family:var(--font-display); font-weight:600; font-size:17px; }
+  .faq-q .plus{ width:22px; height:22px; position:relative; flex-shrink:0; }
+  .faq-q .plus::before, .faq-q .plus::after{ content:''; position:absolute; background:var(--text-dim); top:50%; left:50%; transform:translate(-50%,-50%); }
+  .faq-q .plus::before{ width:14px; height:1.5px; }
+  .faq-q .plus::after{ width:1.5px; height:14px; transition:transform .3s var(--ease), opacity .3s var(--ease); }
+  .faq-item.open .faq-q .plus::after{ transform:translate(-50%,-50%) rotate(90deg); opacity:0; }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .45s var(--ease); }
+  .faq-a p{ padding-bottom:26px; color:var(--text-dim); font-size:15px; max-width:600px; line-height:1.6; }
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{ padding:150px 0; text-align:center; border-top:1px solid var(--border-soft); position:relative; overflow:hidden; }
+  .final-cta::before{ content:''; position:absolute; bottom:-40%; left:50%; transform:translateX(-50%); width:800px; height:800px; border-radius:50%; background:radial-gradient(circle, rgba(200,255,77,0.12), transparent 65%); }
+  .final-cta h2{ font-family:var(--font-display); font-weight:800; font-size:clamp(34px,5vw,58px); letter-spacing:-0.03em; max-width:800px; margin:0 auto 36px; position:relative; z-index:2; }
+  .final-cta .cta-row{ position:relative; z-index:2; display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding:60px 0 40px; border-top:1px solid var(--border-soft); }
+  .footer-top{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:40px; padding-bottom:40px; border-bottom:1px solid var(--border-soft); margin-bottom:28px; }
+  .footer-cols{ display:flex; gap:64px; flex-wrap:wrap; }
+  .footer-col h5{ font-size:12.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:16px; }
+  .footer-col a{ display:block; font-size:14.5px; color:var(--text-dim); margin-bottom:12px; transition:color .25s; }
+  .footer-col a:hover{ color:var(--text); }
+  .footer-bottom{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  .footer-bottom p{ font-size:13px; color:var(--text-faint); }
+  .footer-brand p{ color:var(--text-dim); font-size:14.5px; max-width:280px; margin-top:14px; line-height:1.6; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .network-visual{ height:380px; margin-top:20px; }
+    .story-grid{ grid-template-columns:1fr; gap:40px; }
+    .story-resolve{ border-left:none; border-top:1px solid var(--border); padding-top:32px; padding-left:0; }
+    .services-grid{ grid-template-columns:repeat(2,1fr); }
+    .campaign-grid{ grid-template-columns:1fr; }
+    .why-grid{ grid-template-columns:repeat(2,1fr); }
+    .snap-grid{ grid-template-columns:repeat(2,1fr); }
+    .insights-grid{ grid-template-columns:1fr; }
+    .testi-grid{ grid-template-columns:1fr; }
+    .nav-links{ display:none; }
+    .cursor-glow{ display:none; }
+  }
+  @media (max-width:600px){
+    .wrap{ padding:0 20px; }
+    .services-grid{ grid-template-columns:1fr; }
+    .why-grid{ grid-template-columns:1fr; }
+    .snap-grid{ grid-template-columns:1fr; }
+    .hero{ padding:140px 0 80px; }
+    .hero-meta{ gap:24px; }
+    .footer-cols{ gap:32px; }
+    .journey-item{ padding-left:52px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<header class="nav" id="siteNav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="4" r="2.6" fill="#C8FF4D"/>
+          <circle cx="4" cy="15" r="2.6" fill="#2A2A2A"/>
+          <circle cx="16" cy="15" r="2.6" fill="#2A2A2A"/>
+          <path d="M10 6.6L4.7 12.8M10 6.6L15.3 12.8" stroke="#7A7A7A" stroke-width="1"/>
+        </svg>
+      </span>
+      CollabFlux
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#ecosystem">Ecosystem</a></li>
+      <li><a href="#campaigns">Work</a></li>
+      <li><a href="#insights">Insights</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#cta" class="btn btn-primary btn-sm magnetic">Book Discovery Call</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow reveal">Creator Partnerships Company</p>
+        <h1 class="reveal">
+          <span class="line word-reveal dim" data-words="Influencer marketing is a transaction."></span>
+          <span class="line word-reveal accent-text" data-words="We build partnerships."></span>
+        </h1>
+        <p class="sub reveal">CollabFlux plans, negotiates, produces, and reports on creator partnerships built to compound — not one-off posts that disappear by Friday.</p>
+        <div class="hero-ctas reveal">
+          <a href="#cta" class="btn btn-primary magnetic">Book Discovery Call</a>
+          <a href="#services" class="btn btn-ghost magnetic">View Services</a>
+        </div>
+        <div class="hero-meta reveal">
+          <div><span class="num" data-count="9">0</span><span class="lbl">Service lines</span></div>
+          <div><span class="num" data-count="8">0</span><span class="lbl">Creator niches</span></div>
+          <div><span class="num" data-count="7">0</span><span class="lbl">Stage journey</span></div>
+        </div>
+      </div>
+      <div class="network-visual reveal" id="heroNetwork"></div>
+    </div>
+  </section>
+
+  <!-- AUDIENCE -->
+  <section class="trusted">
+    <div class="wrap">
+      <p class="trusted-label reveal">Built for founders and marketing leaders at</p>
+      <div class="trusted-row reveal">
+        <span class="placeholder-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>D2C Brands</span>
+        <span class="placeholder-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/></svg>SaaS Companies</span>
+        <span class="placeholder-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12l8-8 8 8-8 8z"/></svg>Hospitality</span>
+        <span class="placeholder-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20V10l8-6 8 6v10"/></svg>Education</span>
+        <span class="placeholder-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="16" height="10" rx="2"/><path d="M8 8V6a4 4 0 018 0v2"/></svg>Consumer Tech</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY / WHY THIS MATTERS -->
+  <section class="story">
+    <div class="wrap">
+      <div class="story-statement reveal">
+        <p class="eyebrow">Why This Matters</p>
+        <h2>Most influencer marketing ends at checkout. <span class="dim">The post goes up, the invoice gets paid, and the relationship ends before anyone learns what actually worked.</span></h2>
+      </div>
+      <div class="story-grid">
+        <ul class="problem-list reveal">
+          <li><span class="x">01</span>Creators get treated as ad inventory, booked once and forgotten.</li>
+          <li><span class="x">02</span>Negotiation drags across DMs, emails, and spreadsheets nobody owns.</li>
+          <li><span class="x">03</span>Campaigns launch with a content calendar but no real strategy behind them.</li>
+          <li><span class="x">04</span>Reporting arrives late, if it arrives — and rarely explains why anything worked.</li>
+          <li><span class="x">05</span>Every campaign starts from zero, because no partnership survives past invoice.</li>
+        </ul>
+        <div class="story-resolve reveal">
+          <p class="fix-eyebrow">The Shift</p>
+          <h3>Partnerships compound. Placements don't.</h3>
+          <p>A creator who works with your brand twice understands it better than one who worked with it once. Their audience notices the difference — and starts to trust the brand, not just the post.</p>
+          <p>CollabFlux is built around that idea. One team runs discovery, negotiation, strategy, execution, and reporting as a single connected process, so the relationship — not just the content — gets stronger with every campaign.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">What We Do</p>
+        <h2>Not services. Transformations.</h2>
+        <p>Each one exists to move a brand from a single post to a real partnership.</p>
+      </div>
+      <div class="services-grid reveal" id="servicesGrid">
+        <div class="service-card tilt">
+          <span class="service-index">01</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z" stroke-width="1.5"/></svg></div>
+          <h3>Creator Partnerships</h3>
+          <p>Not a one-off influencer booking. A relationship between your brand and creators who already believe in it.</p>
+        </div>
+        <div class="service-card tilt">
+          <span class="service-index">02</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7" stroke-width="1.5"/><path d="M20 20l-3.5-3.5" stroke-width="1.5"/></svg></div>
+          <h3>Creator Discovery</h3>
+          <p>The right creator isn't the biggest one. We map audiences, not follower counts.</p>
+        </div>
+        <div class="service-card tilt">
+          <span class="service-index">03</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18" stroke-width="1.5"/><circle cx="12" cy="12" r="9" stroke-width="1.5"/></svg></div>
+          <h3>Campaign Strategy</h3>
+          <p>A plan for who to work with, why, and what success looks like — before a single message is sent.</p>
+        </div>
+        <div class="service-card tilt">
+          <span class="service-index">04</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M12 19V4M20 19v-7" stroke-width="1.5"/></svg></div>
+          <h3>Campaign Execution</h3>
+          <p>We run outreach, production, and approvals, so your team isn't chasing a single DM.</p>
+        </div>
+        <div class="service-card tilt">
+          <span class="service-index">05</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M7 12h10M9 7l-5 5 5 5M15 7l5 5-5 5" stroke-width="1.5"/></svg></div>
+          <h3>Creator Negotiation</h3>
+          <p>Fair terms and clear deliverables, without weeks of back-and-forth to get there.</p>
+        </div>
+        <div class="service-card tilt">
+          <span class="service-index">06</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.5"/><path d="M8 3v4M16 3v4" stroke-width="1.5"/></svg></div>
+          <h3>UGC Campaigns</h3>
+          <p>Content built to perform in ads and organic — not just look good in a deck.</p>
+        </div>
+        <div class="service-card tilt">
+          <span class="service-index">07</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h16" stroke-width="1.5"/><path d="M8 15l3-4 3 3 4-6" stroke-width="1.5"/></svg></div>
+          <h3>Reporting &amp; Analytics</h3>
+          <p>The numbers that matter, shared plainly — not the ones that flatter.</p>
+        </div>
+        <div class="service-card tilt">
+          <span class="service-index">08</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 11-3-6.2" stroke-width="1.5"/><path d="M20 4v5h-5" stroke-width="1.5"/></svg></div>
+          <h3>Product Seeding</h3>
+          <p>Getting your product into the right hands before you ask for anything in return.</p>
+        </div>
+        <div class="service-card tilt">
+          <span class="service-index">09</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.6-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.4-9.5 9-9.5 9z" stroke-width="1.5"/></svg></div>
+          <h3>Long-Term Partnerships</h3>
+          <p>Creators who work with you once, then again, then become part of how people know your brand.</p>
+        </div>
+      </div>
+      <div class="future-row reveal">
+        <span class="flabel">Coming Next</span>
+        <span class="future-pill">Creator Management</span>
+        <span class="future-pill">Personal Branding</span>
+        <span class="future-pill">Social Media Growth</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAMPAIGN JOURNEY -->
+  <section class="journey" id="journey">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">How It Works</p>
+        <h2>One journey, seven stages.</h2>
+        <p>The same team carries a campaign from the first brief to the next one.</p>
+      </div>
+      <div class="journey-list" id="journeyList">
+        <div class="journey-fill" id="journeyFill"></div>
+        <div class="journey-item"><span class="journey-dot">1</span><h4>Brief</h4><p>You tell us the goal — budget, timeline, and what growth actually means for this campaign.</p></div>
+        <div class="journey-item"><span class="journey-dot">2</span><h4>Creator Discovery</h4><p>We map the creators whose audience already looks like your customer.</p></div>
+        <div class="journey-item"><span class="journey-dot">3</span><h4>Shortlisting</h4><p>A focused list built for fit, not a spreadsheet of a thousand handles.</p></div>
+        <div class="journey-item"><span class="journey-dot">4</span><h4>Outreach</h4><p>We negotiate terms and deliverables directly, so creators show up prepared.</p></div>
+        <div class="journey-item"><span class="journey-dot">5</span><h4>Execution</h4><p>Content gets briefed, produced, approved, and published on schedule.</p></div>
+        <div class="journey-item"><span class="journey-dot">6</span><h4>Reporting</h4><p>Reach, engagement, and conversions, reported in the language your team already uses.</p></div>
+        <div class="journey-item"><span class="journey-dot">7</span><h4>Growth</h4><p>The creators who worked, work again — on the next campaign, and the one after.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAMPAIGNS / WORK -->
+  <section class="campaigns" id="campaigns">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Selected Work</p>
+        <h2>Case studies, in progress.</h2>
+        <p>We're building our public case study library. Categories below reflect the campaign types we run.</p>
+      </div>
+      <div class="campaign-grid reveal">
+        <div class="campaign-card">
+          <div class="campaign-thumb"><span>Case study coming soon</span></div>
+          <div class="campaign-body">
+            <p class="campaign-tag">Beauty · UGC Campaign</p>
+            <h3>Product seeding across micro creators</h3>
+            <div class="campaign-stats"><div><span class="v">—</span><span class="k">Reach</span></div><div><span class="v">—</span><span class="k">Engagement</span></div><div><span class="v">—</span><span class="k">Conversions</span></div></div>
+          </div>
+        </div>
+        <div class="campaign-card">
+          <div class="campaign-thumb"><span>Case study coming soon</span></div>
+          <div class="campaign-body">
+            <p class="campaign-tag">D2C · Influencer Campaign</p>
+            <h3>Launch push for a new product line</h3>
+            <div class="campaign-stats"><div><span class="v">—</span><span class="k">Reach</span></div><div><span class="v">—</span><span class="k">Engagement</span></div><div><span class="v">—</span><span class="k">Conversions</span></div></div>
+          </div>
+        </div>
+        <div class="campaign-card">
+          <div class="campaign-thumb"><span>Case study coming soon</span></div>
+          <div class="campaign-body">
+            <p class="campaign-tag">Travel · Brand Collaboration</p>
+            <h3>Multi-creator destination campaign</h3>
+            <div class="campaign-stats"><div><span class="v">—</span><span class="k">Reach</span></div><div><span class="v">—</span><span class="k">Engagement</span></div><div><span class="v">—</span><span class="k">Conversions</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREATOR ECOSYSTEM -->
+  <section class="ecosystem" id="ecosystem">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Creator Ecosystem</p>
+        <h2>Across every category that matters.</h2>
+        <p>Hover a category to see how it connects. Our bench spans niches, not just follower counts.</p>
+      </div>
+      <div class="eco-field reveal" id="ecoField">
+        <div class="eco-center">CollabFlux</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Why CollabFlux</p>
+        <h2>Outcomes, not features.</h2>
+      </div>
+      <div class="why-grid reveal">
+        <div class="why-card"><span class="n">01</span><h4>Faster campaign launches</h4><p>Days, not weeks, from brief to live content.</p></div>
+        <div class="why-card"><span class="n">02</span><h4>Better creator matching</h4><p>Fit over follower count, every time.</p></div>
+        <div class="why-card"><span class="n">03</span><h4>Transparent reporting</h4><p>The same numbers we use, shared with you.</p></div>
+        <div class="why-card"><span class="n">04</span><h4>Creator-first relationships</h4><p>Creators who are briefed well perform well.</p></div>
+        <div class="why-card"><span class="n">05</span><h4>Performance focus</h4><p>Every campaign is judged on results, not reach alone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NETWORK SNAPSHOT -->
+  <section class="snapshot">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Network Snapshot</p>
+        <h2>Where things stand today.</h2>
+        <p>Real numbers behind CollabFlux, as of today — no inflated stats, no invented clients.</p>
+      </div>
+      <div class="snap-grid reveal">
+        <div class="snap-card">
+          <div class="snap-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.5"/></svg></div>
+          <span class="snap-value" data-count="9">0</span>
+          <span class="snap-label">Service lines live today</span>
+        </div>
+        <div class="snap-card">
+          <div class="snap-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" stroke-width="1.5"/><path d="M3 12h18M12 3a14 14 0 010 18a14 14 0 010-18z" stroke-width="1.5"/></svg></div>
+          <span class="snap-value" data-count="8">0</span>
+          <span class="snap-label">Creator niches mapped</span>
+        </div>
+        <div class="snap-card">
+          <div class="snap-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M12 19V4M20 19v-7" stroke-width="1.5"/></svg></div>
+          <span class="snap-value" data-count="7">0</span>
+          <span class="snap-label">Stages in every campaign journey</span>
+        </div>
+        <div class="snap-card">
+          <div class="snap-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke-width="1.5"/></svg></div>
+          <span class="snap-value" style="font-size:22px;">Onboarding</span>
+          <span class="snap-label">Current status: actively taking on new brand partners</span>
+        </div>
+      </div>
+      <p class="snap-note reveal">We're early. Reach and conversion figures will show up here once we can share real, verifiable campaign results — not before.</p>
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section class="insights" id="insights">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Insights</p>
+        <h2>How we think about this space.</h2>
+        <p>Perspectives from inside the work, not a content calendar.</p>
+      </div>
+      <div class="insights-grid reveal">
+        <div class="insight-card tilt">
+          <div>
+            <p class="insight-tag">Perspective</p>
+            <h3>Why Nano Creators Outperform Celebrity Influencers</h3>
+          </div>
+          <p>Smaller audiences trust their creators more. That trust is worth more to a brand than raw reach — if the partnership is built right.</p>
+        </div>
+        <div class="insight-card tilt">
+          <div>
+            <p class="insight-tag">Perspective</p>
+            <h3>What Brands Get Wrong About Creator Marketing</h3>
+          </div>
+          <p>Most briefs ask a creator to sound like an ad. The best campaigns ask the opposite question first: what does this creator already do well?</p>
+        </div>
+        <div class="insight-card tilt">
+          <div>
+            <p class="insight-tag">Perspective</p>
+            <h3>Creator Economy Trends Worth Watching</h3>
+          </div>
+          <p>Platforms change every year. What creators owe their audience — honesty, consistency — doesn't.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Partner Voices</p>
+        <h2>This space is reserved for our partners.</h2>
+        <p>As we complete campaigns, real feedback from founders and marketing leads will appear here.</p>
+      </div>
+      <div class="testi-grid reveal">
+        <div class="testi-card"><p class="testi-quote">Testimonial coming soon.</p><div class="testi-foot"><div class="testi-avatar">?</div><div><p class="testi-name">Reserved</p><p class="testi-role">Founder, D2C Brand</p></div></div></div>
+        <div class="testi-card"><p class="testi-quote">Testimonial coming soon.</p><div class="testi-foot"><div class="testi-avatar">?</div><div><p class="testi-name">Reserved</p><p class="testi-role">CMO, SaaS Company</p></div></div></div>
+        <div class="testi-card"><p class="testi-quote">Testimonial coming soon.</p><div class="testi-foot"><div class="testi-avatar">?</div><div><p class="testi-name">Reserved</p><p class="testi-role">Growth Lead, Lifestyle Brand</p></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">FAQ</p>
+        <h2>Questions, answered.</h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item open">
+          <button class="faq-q"><span>What does CollabFlux actually manage?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Everything from creator discovery and negotiation to content production, publishing, and post-campaign reporting.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>How is this different from a normal influencer agency?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>We run partnerships as one connected process with a single team, and we design campaigns so creators come back for the next one — instead of treating every post as a one-off transaction.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>What industries do you work with?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>D2C, SaaS, hospitality, education, and consumer lifestyle brands across beauty, fashion, and travel.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Can you work with our existing creator relationships?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Yes. We can manage creators you already work with, alongside new matches from our network.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>How do we get started?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Book a discovery call. We'll learn your goals and put together an initial creator strategy.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta" id="cta">
+    <div class="wrap">
+      <h2 class="reveal">Ready to build a partnership people actually remember?</h2>
+      <div class="cta-row reveal">
+        <a href="#" class="btn btn-primary magnetic">Let's Talk</a>
+        <a href="#services" class="btn btn-ghost magnetic">View Services</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand" style="max-width:320px;">
+        <a href="#top" class="logo">
+          <span class="logo-mark">
+            <svg viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="4" r="2.6" fill="#C8FF4D"/>
+              <circle cx="4" cy="15" r="2.6" fill="#2A2A2A"/>
+              <circle cx="16" cy="15" r="2.6" fill="#2A2A2A"/>
+              <path d="M10 6.6L4.7 12.8M10 6.6L15.3 12.8" stroke="#7A7A7A" stroke-width="1"/>
+            </svg>
+          </span>
+          CollabFlux
+        </a>
+        <p>We don't book influencers. We build partnerships between brands and creators that compound over time.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Company</h5>
+          <a href="#services">Services</a>
+          <a href="#journey">Journey</a>
+          <a href="#campaigns">Work</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="#ecosystem">Creator Ecosystem</a>
+          <a href="#insights">Insights</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <a href="#cta">Book a Call</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 CollabFlux. All rights reserved.</p>
+      <p>Made for brands and creators who want more than reach.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+  // ---- nav scroll state + scroll progress ----
+  const nav = document.getElementById('siteNav');
+  const progress = document.getElementById('scrollProgress');
+  function onScroll(){
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 40);
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // ---- cursor glow ----
+  const glow = document.getElementById('cursorGlow');
+  if(glow && !isTouch){
+    document.addEventListener('mousemove', (e)=>{
+      glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
+      glow.classList.add('active');
+    });
+    document.addEventListener('mouseleave', ()=> glow.classList.remove('active'));
+  }
+
+  // ---- magnetic buttons ----
+  if(!isTouch){
+    document.querySelectorAll('.magnetic').forEach(btn=>{
+      btn.addEventListener('mousemove', (e)=>{
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width/2;
+        const y = e.clientY - r.top - r.height/2;
+        btn.style.transform = `translate(${x*0.22}px, ${y*0.32}px)`;
+      });
+      btn.addEventListener('mouseleave', ()=>{ btn.style.transform = 'translate(0,0)'; });
+    });
+  }
+
+  // ---- card tilt ----
+  if(!isTouch){
+    document.querySelectorAll('.tilt').forEach(card=>{
+      card.addEventListener('mousemove', (e)=>{
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left)/r.width - 0.5;
+        const py = (e.clientY - r.top)/r.height - 0.5;
+        card.style.transform = `perspective(700px) rotateX(${(-py*4).toFixed(2)}deg) rotateY(${(px*4).toFixed(2)}deg) translateY(-2px)`;
+      });
+      card.addEventListener('mouseleave', ()=>{ card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)'; });
+    });
+  }
+
+  // ---- word-by-word text reveal ----
+  document.querySelectorAll('.word-reveal').forEach(el=>{
+    const words = el.getAttribute('data-words').split(' ');
+    el.innerHTML = words.map((w,i)=>`<span style="transition-delay:${i*45}ms">${w}</span>`).join(' ');
+  });
+
+  // ---- reveal on scroll ----
+  const revealEls = document.querySelectorAll('.reveal, .journey-item, .word-reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in-view');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15, rootMargin:'0px 0px -60px 0px'});
+  revealEls.forEach(el=>io.observe(el));
+
+  // ---- number counters ----
+  const counters = document.querySelectorAll('[data-count]');
+  const cio = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el = e.target;
+        const target = parseInt(el.getAttribute('data-count'),10);
+        let cur = 0;
+        const step = Math.max(1, Math.round(target/24));
+        const t = setInterval(()=>{
+          cur += step;
+          if(cur >= target){ cur = target; clearInterval(t); }
+          el.textContent = cur;
+        }, 30);
+        cio.unobserve(el);
+      }
+    });
+  }, {threshold:0.5});
+  counters.forEach(el=>cio.observe(el));
+
+  // ---- FAQ accordion ----
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    const btn = item.querySelector('.faq-q');
+    const ans = item.querySelector('.faq-a');
+    function setState(target, open){
+      target.classList.toggle('open', open);
+      target.querySelector('.faq-a').style.maxHeight = open ? target.querySelector('.faq-a').scrollHeight + 'px' : '0px';
+    }
+    setState(item, item.classList.contains('open'));
+    btn.addEventListener('click', ()=>{
+      const willOpen = !item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(other=>{ if(other!==item) setState(other,false); });
+      setState(item, willOpen);
+    });
+  });
+
+  // ---- journey scroll fill ----
+  const journeyList = document.getElementById('journeyList');
+  const journeyFill = document.getElementById('journeyFill');
+  const journeyItems = document.querySelectorAll('.journey-item');
+  const jio = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in-view'); });
+  }, {threshold:0.5});
+  journeyItems.forEach(el=>jio.observe(el));
+  function updateJourneyFill(){
+    if(!journeyList) return;
+    const r = journeyList.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = r.height;
+    const seen = Math.min(Math.max(vh*0.75 - r.top, 0), total);
+    journeyFill.style.height = (total>0 ? (seen/total)*100 : 0) + '%';
+  }
+  document.addEventListener('scroll', updateJourneyFill, {passive:true});
+  window.addEventListener('resize', updateJourneyFill);
+  updateJourneyFill();
+
+  // ---- hero network visual (signature element) ----
+  const nodes = [
+    {label:'CollabFlux', brand:true, x:38, y:44, initials:'CF'},
+    {label:'Beauty Creator', x:4, y:6, initials:'BC'},
+    {label:'Tech Creator', x:70, y:2, initials:'TC'},
+    {label:'Fashion Creator', x:2, y:70, initials:'FC'},
+    {label:'Fitness Creator', x:66, y:78, initials:'FT'},
+    {label:'Travel Creator', x:82, y:36, initials:'TR'},
+  ];
+  const field = document.getElementById('heroNetwork');
+  if(field){
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS,'svg');
+    svg.setAttribute('viewBox','0 0 100 100');
+    svg.setAttribute('preserveAspectRatio','none');
+    svg.style.position='absolute'; svg.style.inset='0';
+    field.appendChild(svg);
+    const brandNode = nodes.find(n=>n.brand);
+    nodes.forEach(n=>{
+      if(n.brand) return;
+      const line = document.createElementNS(svgNS,'path');
+      const x1 = brandNode.x + 6, y1 = brandNode.y + 3;
+      const x2 = n.x + 6, y2 = n.y + 3;
+      const mx = (x1+x2)/2, my = (y1+y2)/2 - 6;
+      line.setAttribute('d', `M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`);
+      line.setAttribute('class','net-line pulse');
+      line.setAttribute('vector-effect','non-scaling-stroke');
+      svg.appendChild(line);
+    });
+    nodes.forEach((n,i)=>{
+      const el = document.createElement('div');
+      el.className = 'net-node' + (n.brand ? ' brand' : '');
+      el.style.left = n.x + '%';
+      el.style.top = n.y + '%';
+      el.style.animationDelay = (i * 0.6) + 's';
+      const dotColor = n.brand ? '' : ['#C8FF4D','#8FE0FF','#FFB3E0','#FFD26B','#B8FF9E'][i % 5];
+      el.innerHTML = `<span class="dot" style="${n.brand ? '' : 'background:'+dotColor}">${n.initials}</span>${n.label}`;
+      field.appendChild(el);
+    });
+  }
+
+  // ---- creator ecosystem field (center-connected, interactive) ----
+  const niches = [
+    {name:'Beauty', x:8, y:10}, {name:'Fashion', x:40, y:4}, {name:'Tech', x:74, y:10},
+    {name:'Finance', x:86, y:44}, {name:'Food', x:70, y:78}, {name:'Fitness', x:36, y:84},
+    {name:'Travel', x:8, y:64}, {name:'Education', x:14, y:34}
+  ];
+  const ecoField = document.getElementById('ecoField');
+  if(ecoField){
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS,'svg');
+    svg.setAttribute('viewBox','0 0 100 100');
+    svg.setAttribute('preserveAspectRatio','none');
+    ecoField.appendChild(svg);
+    const cx = 50, cy = 50;
+    const lines = [];
+    niches.forEach((n,i)=>{
+      const line = document.createElementNS(svgNS,'path');
+      const x2 = n.x + 6, y2 = n.y + 3;
+      const mx = (cx+x2)/2, my = (cy+y2)/2;
+      line.setAttribute('d', `M ${cx} ${cy} Q ${mx} ${my} ${x2} ${y2}`);
+      line.setAttribute('class','eco-line');
+      line.setAttribute('vector-effect','non-scaling-stroke');
+      svg.appendChild(line);
+      lines.push(line);
+
+      const chip = document.createElement('div');
+      chip.className='eco-chip';
+      chip.textContent = n.name;
+      chip.style.left = n.x + '%';
+      chip.style.top = n.y + '%';
+      chip.style.animationDelay = (i*0.4)+'s';
+      chip.addEventListener('mouseenter', ()=>{ line.classList.add('active'); chip.classList.add('active-chip'); });
+      chip.addEventListener('mouseleave', ()=>{ line.classList.remove('active'); chip.classList.remove('active-chip'); });
+      ecoField.appendChild(chip);
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
